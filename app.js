@@ -535,19 +535,23 @@ function agregarInstalacion() {
   }
 
   const lista = getInstalaciones();
-  lista.push({
+  const nuevaInstalacion = {
     id: Date.now(),
     cliente, telefono, direccion, tipo, fecha, notas,
     estado: 'pendiente',
     pagado: false,
     recibo: null
-  });
+  };
+  lista.push(nuevaInstalacion);
   setInstalaciones(lista);
 
   ['insCliente','insTelefono','insDireccion','insFecha','insNotas'].forEach(id => document.getElementById(id).value = '');
 
   pintarInstalaciones();
-  showNotification('success', 'Instalación programada', `Se agendó la instalación para ${cliente}.`);
+  showNotification('success', 'Instalación programada', `Se agendó la instalación para ${cliente}. Continúa con el pago.`);
+
+  // Al dar de alta la cita, se envía directo a pagar (simulación PayPal + sello digital)
+  abrirModalPago(nuevaInstalacion.id);
 }
 
 function siguienteEstado(estado) {
