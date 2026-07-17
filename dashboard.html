@@ -4,9 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Air Party — Panel</title>
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+<div class="notif-container" id="notifContainer"></div>
 
 <div class="app-shell">
 
@@ -169,8 +171,61 @@
 
 </div>
 
+<!-- ===== MODAL: PAGO SIMULADO (PAYPAL) ===== -->
+<div class="modal-overlay" id="pagoModal">
+  <div class="modal-box card">
+
+    <!-- Paso 1: checkout simulado -->
+    <div id="pagoStepCheckout">
+      <div class="paypal-header">
+        <span class="paypal-logo">Pay<b>Pal</b></span>
+        <span class="modo-sandbox">modo de pruebas</span>
+      </div>
+      <h3 style="margin-top:14px;">Confirmar pago</h3>
+      <p class="sub" id="pagoResumen">Instalación para —</p>
+
+      <div class="field">
+        <label>Correo de PayPal</label>
+        <input type="email" id="pagoEmail" placeholder="tucorreo@ejemplo.com">
+      </div>
+      <div class="field">
+        <label>Tarjeta asociada (simulada)</label>
+        <input type="text" id="pagoTarjeta" placeholder="**** **** **** 4242" value="**** **** **** 4242" readonly>
+      </div>
+
+      <div class="pago-total">
+        <span>Total a pagar</span>
+        <strong id="pagoMonto">$0.00 MXN</strong>
+      </div>
+
+      <button class="btn btn-primary" style="width:100%" onclick="confirmarPago()">Pagar ahora</button>
+      <button class="btn btn-ghost" style="width:100%; margin-top:10px;" onclick="cerrarModalPago()">Cancelar</button>
+
+      <p class="helper-note" style="margin-top:14px;">
+        Esta es una simulación educativa. No se procesa ningún cargo real ni se conecta con la API oficial de PayPal.
+      </p>
+    </div>
+
+    <!-- Paso 2: procesando -->
+    <div id="pagoStepProcesando" style="display:none; text-align:center; padding: 30px 0;">
+      <div class="spinner"></div>
+      <p style="margin-top:16px; font-weight:700;">Procesando pago con PayPal…</p>
+    </div>
+
+    <!-- Paso 3: recibo con sello digital -->
+    <div id="pagoStepRecibo" style="display:none;">
+      <div class="recibo" id="reciboContenido">
+        <!-- se llena dinámicamente -->
+      </div>
+      <button class="btn btn-primary" style="width:100%; margin-top:16px;" onclick="imprimirRecibo()">Descargar / Imprimir recibo</button>
+      <button class="btn btn-ghost" style="width:100%; margin-top:10px;" onclick="cerrarModalPago()">Cerrar</button>
+    </div>
+
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
-<script src="js/app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
