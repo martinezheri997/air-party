@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Air Party — Panel</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ===== Barra superior ===== -->
+  <header class="topbar">
+    <div class="brand-mark">
+      <div class="logo-dot"></div>
+      <span>Air Party</span>
+    </div>
+    <div class="topbar-right">
+      <div class="user-chip">
+        <div class="avatar" id="userAvatar">A</div>
+        <span id="userName">Equipo Air Party</span>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="cerrarSesion()">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <!-- ===== Navegación por pestañas ===== -->
+  <nav class="tabbar">
+    <button class="tab-btn active" data-view="agenda">🗓️ Agenda</button>
+    <button class="tab-btn" data-view="disenos">🎨 Diseños</button>
+    <button class="tab-btn" data-view="instalacion">❄️ Instalación de climas</button>
+  </nav>
+
+  <!-- ===== AGENDA ===== -->
+  <section class="view active" id="view-agenda">
+    <div class="view-header">
+      <h2>Agenda</h2>
+      <p>Organiza visitas, entregas de diseño e instalaciones del equipo.</p>
+    </div>
+
+    <div class="agenda-grid">
+      <div class="calendar-card card">
+        <div class="cal-head">
+          <h3 id="calMonthLabel">Mes</h3>
+          <div class="cal-nav">
+            <button onclick="cambiarMes(-1)">‹</button>
+            <button onclick="cambiarMes(1)">›</button>
+          </div>
+        </div>
+        <div class="cal-weekdays">
+          <div>D</div><div>L</div><div>M</div><div>M</div><div>J</div><div>V</div><div>S</div>
+        </div>
+        <div class="cal-days" id="calDays"></div>
+      </div>
+
+      <div>
+        <div class="agenda-form card">
+          <h3>Nueva cita</h3>
+          <div class="field">
+            <label for="evTitulo">Título</label>
+            <input type="text" id="evTitulo" placeholder="Ej. Instalación climas — Salón Fiesta Azul">
+          </div>
+          <div class="field">
+            <label for="evFecha">Fecha seleccionada</label>
+            <input type="text" id="evFecha" readonly>
+          </div>
+          <div class="field">
+            <label for="evHora">Hora</label>
+            <input type="time" id="evHora">
+          </div>
+          <button class="btn btn-primary" style="width:100%" onclick="agregarEvento()">Agregar a la agenda</button>
+        </div>
+
+        <div class="events-list card" style="padding:24px; margin-top:20px;">
+          <h3>Próximas citas</h3>
+          <div id="eventsList"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DISEÑOS ===== -->
+  <section class="view" id="view-disenos">
+    <div class="view-header">
+      <h2>Diseños</h2>
+      <p>Temáticas divertidas para personalizar los equipos de clima de tus clientes.</p>
+    </div>
+
+    <div class="designs-grid" id="designsGrid"></div>
+
+    <div class="customizer card" id="customizerPanel">
+      <h3 id="custTitle">Personalizar diseño</h3>
+      <p class="sub">Elige un color de acento para esta temática y guárdalo como favorito.</p>
+      <div class="customizer-preview" id="custPreview"></div>
+      <div class="swatches" id="custSwatches"></div>
+      <button class="btn btn-spark" onclick="guardarFavorito()">Guardar como favorito</button>
+      <button class="btn btn-ghost" onclick="cerrarCustomizer()">Cerrar</button>
+    </div>
+  </section>
+
+  <!-- ===== INSTALACIÓN DE CLIMAS ===== -->
+  <section class="view" id="view-instalacion">
+    <div class="view-header">
+      <h2>Instalación de climas</h2>
+      <p>Programa y da seguimiento a las instalaciones de equipos.</p>
+    </div>
+
+    <div class="install-grid">
+      <div class="install-form card">
+        <h3>Programar instalación</h3>
+        <div class="form-row">
+          <div class="field">
+            <label for="insCliente">Cliente</label>
+            <input type="text" id="insCliente" placeholder="Nombre del cliente">
+          </div>
+          <div class="field">
+            <label for="insTelefono">Teléfono</label>
+            <input type="text" id="insTelefono" placeholder="81 0000 0000">
+          </div>
+        </div>
+        <div class="field">
+          <label for="insDireccion">Dirección</label>
+          <input type="text" id="insDireccion" placeholder="Calle, número, colonia">
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="insTipo">Tipo de equipo</label>
+            <select id="insTipo">
+              <option>Mini split — Temática Selva Tropical</option>
+              <option>Mini split — Temática Fiesta de Confeti</option>
+              <option>Mini split — Temática Espacio Neón</option>
+              <option>Mini split — Temática Retro Arcade</option>
+              <option>Ventana — Diseño clásico Air Party</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="insFecha">Fecha</label>
+            <input type="date" id="insFecha">
+          </div>
+        </div>
+        <div class="field">
+          <label for="insNotas">Notas</label>
+          <input type="text" id="insNotas" placeholder="Detalles adicionales (opcional)">
+        </div>
+        <button class="btn btn-primary" style="width:100%" onclick="agregarInstalacion()">Programar instalación</button>
+      </div>
+
+      <div class="install-table-card card">
+        <h3>Instalaciones programadas</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Equipo</th>
+              <th>Fecha</th>
+              <th>Estado</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="installTableBody"></tbody>
+        </table>
+        <div id="installEmpty" class="table-empty" style="display:none;">
+          Aún no hay instalaciones programadas. ¡Agrega la primera!
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
