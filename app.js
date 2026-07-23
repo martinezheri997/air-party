@@ -7,6 +7,37 @@
 const MESES = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
 
 /* ---------------------------------------------------------
+   ESTADO GLOBAL (declarado arriba de todo para evitar
+   errores de "usado antes de inicializar")
+--------------------------------------------------------- */
+let calFecha = new Date();
+let fechaSeleccionada = new Date();
+
+const TEMAS = [
+  { id: 'selva', nombre: 'Selva Tropical', emoji: '🌴', desc: 'Hojas, loros y frescura de jungla para el equipo.', color1: '#8FE3B0', color2: '#3CB878' },
+  { id: 'confeti', nombre: 'Fiesta de Confeti', emoji: '🎉', desc: 'Colores vivos y confeti estampado, pura celebración.', color1: '#FFD166', color2: '#FF8A80' },
+  { id: 'espacio', nombre: 'Espacio Neón', emoji: '🚀', desc: 'Estrellas, planetas y luces neón nocturnas.', color1: '#7B6CF6', color2: '#2C2A6B' },
+  { id: 'arcade', nombre: 'Retro Arcade', emoji: '🕹️', desc: 'Pixel art y colores arcade de los 80s.', color1: '#FF6EC7', color2: '#5CC8FF' },
+  { id: 'playa', nombre: 'Playa de Verano', emoji: '🏖️', desc: 'Olas, coco y vibra costera todo el año.', color1: '#5CD3FF', color2: '#FFE29A' },
+  { id: 'nieve', nombre: 'Fiesta de Nieve', emoji: '❄️', desc: 'Copos de nieve y azules helados, muy fresh.', color1: '#CDEFFF', color2: '#4FC3E8' },
+];
+const SWATCHES = ['#4FC3E8', '#1E88C7', '#FFD166', '#FF8A80', '#3CB878', '#7B6CF6', '#FF6EC7'];
+let temaActivo = null;
+let colorActivo = null;
+
+const PRECIOS_TIPO = {
+  'Mini split — Temática Selva Tropical': 8500,
+  'Mini split — Temática Fiesta de Confeti': 8900,
+  'Mini split — Temática Espacio Neón': 9200,
+  'Mini split — Temática Retro Arcade': 9200,
+  'Ventana — Diseño clásico Air Party': 6500
+};
+let idInstalacionEnPago = null;
+
+const captchaValores = { login: '', registro: '' };
+const CAPTCHA_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+
+/* ---------------------------------------------------------
    NOTIFICACIONES (buenas prácticas: login, compra, avisos)
 --------------------------------------------------------- */
 function crearContenedorNotifSiFalta() {
@@ -66,9 +97,6 @@ function setUsuarios(lista) {
 /* ---------------------------------------------------------
    CAPTCHA VISUAL (100% local, sin servicios externos)
 --------------------------------------------------------- */
-const captchaValores = { login: '', registro: '' };
-const CAPTCHA_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-
 function generarCaptcha(modo) {
   const canvasId = modo === 'registro' ? 'captchaCanvasReg' : 'captchaCanvas';
   const canvas = document.getElementById(canvasId);
@@ -280,20 +308,9 @@ function cerrarSesion() {
   window.location.href = 'index.html';
 }
 
-function showToast(msg) {
-  const toast = document.getElementById('toast');
-  if (!toast) return;
-  toast.textContent = msg;
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 2200);
-}
-
 /* ---------------------------------------------------------
    AGENDA
 --------------------------------------------------------- */
-let calFecha = new Date();
-let fechaSeleccionada = new Date();
-
 function initAgenda() {
   pintarCalendario();
   pintarEventos();
@@ -418,20 +435,6 @@ function pintarEventos() {
 /* ---------------------------------------------------------
    DISEÑOS (temáticas divertidas de climas)
 --------------------------------------------------------- */
-const TEMAS = [
-  { id: 'selva', nombre: 'Selva Tropical', emoji: '🌴', desc: 'Hojas, loros y frescura de jungla para el equipo.', color1: '#8FE3B0', color2: '#3CB878' },
-  { id: 'confeti', nombre: 'Fiesta de Confeti', emoji: '🎉', desc: 'Colores vivos y confeti estampado, pura celebración.', color1: '#FFD166', color2: '#FF8A80' },
-  { id: 'espacio', nombre: 'Espacio Neón', emoji: '🚀', desc: 'Estrellas, planetas y luces neón nocturnas.', color1: '#7B6CF6', color2: '#2C2A6B' },
-  { id: 'arcade', nombre: 'Retro Arcade', emoji: '🕹️', desc: 'Pixel art y colores arcade de los 80s.', color1: '#FF6EC7', color2: '#5CC8FF' },
-  { id: 'playa', nombre: 'Playa de Verano', emoji: '🏖️', desc: 'Olas, coco y vibra costera todo el año.', color1: '#5CD3FF', color2: '#FFE29A' },
-  { id: 'nieve', nombre: 'Fiesta de Nieve', emoji: '❄️', desc: 'Copos de nieve y azules helados, muy fresh.', color1: '#CDEFFF', color2: '#4FC3E8' },
-];
-
-const SWATCHES = ['#4FC3E8', '#1E88C7', '#FFD166', '#FF8A80', '#3CB878', '#7B6CF6', '#FF6EC7'];
-
-let temaActivo = null;
-let colorActivo = null;
-
 function getFavoritos() {
   return JSON.parse(localStorage.getItem('airparty_favoritos') || '{}');
 }
@@ -609,14 +612,6 @@ function pintarInstalaciones() {
 /* ---------------------------------------------------------
    PRECIOS por tipo de equipo
 --------------------------------------------------------- */
-const PRECIOS_TIPO = {
-  'Mini split — Temática Selva Tropical': 8500,
-  'Mini split — Temática Fiesta de Confeti': 8900,
-  'Mini split — Temática Espacio Neón': 9200,
-  'Mini split — Temática Retro Arcade': 9200,
-  'Ventana — Diseño clásico Air Party': 6500
-};
-
 function precioPorTipo(tipo) {
   return PRECIOS_TIPO[tipo] || 8000;
 }
@@ -638,7 +633,6 @@ function etiquetaEstado(estado) {
    Una integración real requiere un backend que verifique la
    transacción con las credenciales oficiales de PayPal.
 --------------------------------------------------------- */
-let idInstalacionEnPago = null;
 
 function abrirModalPago(id) {
   const item = getInstalaciones().find(i => i.id === id);
