@@ -20,6 +20,12 @@ const TEMAS = [
   { id: 'arcade', nombre: 'Retro Arcade', emoji: '🕹️', desc: 'Pixel art y colores arcade de los 80s.', color1: '#FF6EC7', color2: '#5CC8FF' },
   { id: 'playa', nombre: 'Playa de Verano', emoji: '🏖️', desc: 'Olas, coco y vibra costera todo el año.', color1: '#5CD3FF', color2: '#FFE29A' },
   { id: 'nieve', nombre: 'Fiesta de Nieve', emoji: '❄️', desc: 'Copos de nieve y azules helados, muy fresh.', color1: '#CDEFFF', color2: '#4FC3E8' },
+  { id: 'cumple', nombre: 'Cumpleaños Dorado', emoji: '🎂', desc: 'Globos, listones y un brillo dorado de celebración.', color1: '#FFE29A', color2: '#FFB86B' },
+  { id: 'halloween', nombre: 'Halloween Spooky', emoji: '🎃', desc: 'Calabazas, murciélagos y naranja fantasmal.', color1: '#FFB05C', color2: '#3B2A5A' },
+  { id: 'navidad', nombre: 'Navidad Mágica', emoji: '🎄', desc: 'Pinos, luces cálidas y rojo navideño.', color1: '#8FE3B0', color2: '#E1543E' },
+  { id: 'circo', nombre: 'Circo Divertido', emoji: '🎪', desc: 'Rayas de carpa, palomitas y alegría de feria.', color1: '#FF8A80', color2: '#FFD166' },
+  { id: 'unicornio', nombre: 'Unicornio Pastel', emoji: '🦄', desc: 'Tonos pastel, arcoíris y destellos mágicos.', color1: '#FFB4E6', color2: '#B0C4FF' },
+  { id: 'submarino', nombre: 'Acuario Submarino', emoji: '🐠', desc: 'Peces, burbujas y un azul profundo de mar.', color1: '#5CD3FF', color2: '#1E3A6B' },
 ];
 const SWATCHES = ['#4FC3E8', '#1E88C7', '#FFD166', '#FF8A80', '#3CB878', '#7B6CF6', '#FF6EC7'];
 let temaActivo = null;
@@ -30,6 +36,14 @@ const PRECIOS_TIPO = {
   'Mini split — Temática Fiesta de Confeti': 8900,
   'Mini split — Temática Espacio Neón': 9200,
   'Mini split — Temática Retro Arcade': 9200,
+  'Mini split — Temática Playa de Verano': 8700,
+  'Mini split — Temática Fiesta de Nieve': 8700,
+  'Mini split — Temática Cumpleaños Dorado': 9000,
+  'Mini split — Temática Halloween Spooky': 9000,
+  'Mini split — Temática Navidad Mágica': 9100,
+  'Mini split — Temática Circo Divertido': 8900,
+  'Mini split — Temática Unicornio Pastel': 9300,
+  'Mini split — Temática Acuario Submarino': 9300,
   'Ventana — Diseño clásico Air Party': 6500
 };
 let idInstalacionEnPago = null;
